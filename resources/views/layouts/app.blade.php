@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Shop') }}</title>
+    <title>{{ config('app.name', 'ecomm') }}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-50 text-gray-900 antialiased">
@@ -15,9 +16,14 @@
             </a>
 
             <div class="flex items-center gap-4 text-sm">
+                <a href="{{ route('products.index') }}" class="text-gray-600 hover:text-gray-900 transition">Products</a>
+                <a href="{{ route('categories.index') }}" class="text-gray-600 hover:text-gray-900 transition">Categories</a>
                 @auth
                     @if(auth()->user()->isSuperAdmin())
                         <a href="{{ route('admin.users.index') }}" class="text-gray-600 hover:text-gray-900 transition">Admin</a>
+                    @endif
+                    @if(auth()->user()->canManageProducts())
+                        <a href="{{ route('admin.products.index') }}" class="text-gray-600 hover:text-gray-900 transition">Manage products</a>
                     @endif
                     <span class="text-gray-600">{{ auth()->user()->name }}</span>
                     <form method="POST" action="{{ route('logout') }}">

@@ -43,6 +43,12 @@ class User extends Authenticatable
         return $this->role === $role;
     }
 
+    public function canManageProducts(): bool
+    {
+        return $this->role === UserRole::SuperAdmin
+            || $this->role === UserRole::ProductAdmin;
+    }
+
     public function shippingAddresses(): HasMany
     {
         return $this->hasMany(ShippingAddress::class);
