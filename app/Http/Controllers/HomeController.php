@@ -15,7 +15,8 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
-        $newArrivals = Product::latest()
+        $newArrivals = Product::whereNotIn('id', $featuredProducts->modelKeys())
+            ->latest()
             ->take(4)
             ->get();
 

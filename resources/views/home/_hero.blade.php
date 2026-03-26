@@ -107,12 +107,12 @@
 @push('scripts')
 <script>
 (function () {
-    var TOTAL = 3, INTERVAL = 5000;
     var slides  = document.getElementById('hero-slides');
     var dots    = document.querySelectorAll('#hero-dots [data-index]');
     var prevBtn = document.getElementById('hero-prev');
     var nextBtn = document.getElementById('hero-next');
-    var current = 0, timer = null;
+    var INTERVAL = 5000;
+    var TOTAL = dots.length, current = 0, timer = null;
 
     function goTo(index) {
         current = (index + TOTAL) % TOTAL;
