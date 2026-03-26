@@ -46,6 +46,54 @@
         @yield('content')
     </main>
 
+    <footer class="bg-white border-t border-gray-200 mt-16">
+        <div class="max-w-7xl mx-auto px-4 py-10">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 text-sm">
+
+                <div>
+                    <p class="font-bold text-gray-900 mb-3">{{ config('app.name', 'Shop') }}</p>
+                    <p class="text-gray-500 text-xs leading-relaxed">
+                        Quality products delivered to your door. Shop with confidence.
+                    </p>
+                </div>
+
+                <div>
+                    <p class="font-semibold text-gray-700 mb-3 uppercase tracking-wider text-xs">Company</p>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-500 hover:text-gray-900 transition-colors">About</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-gray-900 transition-colors">Careers</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-gray-900 transition-colors">Press</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <p class="font-semibold text-gray-700 mb-3 uppercase tracking-wider text-xs">Support</p>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-500 hover:text-gray-900 transition-colors">Contact</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-gray-900 transition-colors">FAQ</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-gray-900 transition-colors">Returns</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <p class="font-semibold text-gray-700 mb-3 uppercase tracking-wider text-xs">Legal</p>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-500 hover:text-gray-900 transition-colors">Privacy</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-gray-900 transition-colors">Terms</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-gray-900 transition-colors">Cookie Policy</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-gray-100 flex flex-col sm:flex-row
+                        items-center justify-between gap-2 text-xs text-gray-400">
+                <p>&copy; {{ date('Y') }} {{ config('app.name', 'Shop') }}. All rights reserved.</p>
+                <p>Built with Laravel</p>
+            </div>
+        </div>
+    </footer>
+
     @stack('scripts')
 </body>
 </html>
