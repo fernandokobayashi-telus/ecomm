@@ -9,10 +9,11 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ShippingAddressController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => view('welcome'));
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Guest-only auth routes
 Route::middleware('guest')->group(function () {
