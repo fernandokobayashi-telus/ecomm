@@ -32,11 +32,11 @@
     @endif
 
     {{-- Products --}}
-    @if ($products->isEmpty())
+    @if ($category->products->isEmpty())
         <p class="text-gray-500 text-sm">No products in this category yet.</p>
     @else
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach ($products as $product)
+            @foreach ($category->products as $product)
                 <a href="{{ route('products.show', $product) }}"
                    class="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition group">
 
