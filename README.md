@@ -1,58 +1,183 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# eComm — Laravel E-Commerce Playground
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A full-featured e-commerce application built with Laravel 13, Blade, and Tailwind CSS 4. This project serves as a playground for exploring modern patterns and agentic development with tools like Laravel Boost.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tech Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Layer | Technology |
+|-------|-----------|
+| Backend | PHP 8.3+ / Laravel 13 |
+| Frontend | Blade Templates + Tailwind CSS 4 |
+| Build Tool | Vite 8 |
+| Database | MySQL 8.4 |
+| Cache & Sessions | Redis |
+| Search | Meilisearch (Laravel Scout) |
+| Email Testing | Mailpit (UI at port 8025) |
+| Browser Automation | Selenium |
+| Local Dev | Laravel Sail (Docker) |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Getting Started
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Prerequisites
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Docker Desktop
+- Composer
+- Node.js / npm
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### Setup
+
+```bash
+# Start Docker services
+./vendor/bin/sail up -d
+
+# Run migrations and seed the database
+./vendor/bin/sail artisan migrate --seed
+
+# Install JS dependencies and build assets
+./vendor/bin/sail npm install
+./vendor/bin/sail npm run build
+```
+
+### Running the Dev Stack
+
+Start the full development stack (PHP server + queue worker + log viewer + Vite):
+
+```bash
+./vendor/bin/sail composer dev
+```
+
+Or start services individually:
+
+```bash
+# Docker services
+./vendor/bin/sail up -d
+
+# Frontend dev server (hot reload)
+./vendor/bin/sail npm run dev
+
+# Queue worker
+./vendor/bin/sail artisan queue:listen
+
+# Log viewer
+./vendor/bin/sail artisan pail
+```
+
+---
+
+## Common Commands
+
+| Task | Command |
+|------|---------|
+| Run all tests | `composer test` |
+| Run a single test file | `./vendor/bin/sail artisan test tests/Feature/SomeTest.php` |
+| Run a filtered test | `./vendor/bin/sail artisan test --filter=testMethodName` |
+| Build frontend assets | `./vendor/bin/sail npm run build` |
+| Fresh migrate + seed | `./vendor/bin/sail artisan migrate:fresh --seed` |
+| List routes | `./vendor/bin/sail artisan route:list` |
+| Run Pint (code formatter) | `./vendor/bin/sail bin pint --dirty` |
+
+---
+
+## Seeded Data
+
+After running `migrate --seed`, the database is populated with:
+
+- **1 Super Admin** — `admin@admin.com` / `admin123`
+- **5 dummy users** (faker-generated)
+- **5 root categories** (Electronics, Clothing, Home & Living, Sports, Books), each with **3 subcategories**
+- **150 products** distributed across categories, 25 with images
+
+---
+
+## Features
+
+### Storefront
+
+- **Home page** — hero banner, featured products carousel, new arrivals section, category sidebar, newsletter signup
+- **Product listing** — responsive grid with all products
+- **Product detail** — full description, price (formatted from cents), associated categories
+- **Category browsing** — hierarchical category tree (up to 2 levels), products per category
+
+### Authentication
+
+- User registration (assigned `user` role by default)
+- Login with "remember me" support
+- Session-based auth
+
+### User Dashboard
+
+- **Profile management** — update name and phone number
+- **Password change** — requires current password verification
+- **Shipping addresses** — add, edit, delete multiple addresses; mark one as default
+
+### Admin Panel (`/admin`)
+
+Accessible to `super_admin` and `product_admin` roles:
+
+- **Products** — full CRUD, auto-slug generation, category assignment (many-to-many), cent-based pricing
+- **Categories** — full CRUD, hierarchical structure (max 2 levels), auto-slug generation
+
+Accessible to `super_admin` only:
+
+- **User management** — list users, edit name/email/role, delete users (self-deletion protected)
+
+### Role-Based Access Control
+
+| Role | Access |
+|------|--------|
+| `super_admin` | Full admin access including user management |
+| `product_admin` | Product and category management |
+| `sales_admin` | Reserved for future sales features |
+| `user` | Storefront + personal dashboard only |
+
+---
+
+## Project Structure
+
+```
+app/
+├── Enums/UserRole.php          # Role enum (super_admin, user, product_admin, sales_admin)
+├── Http/Controllers/
+│   ├── Admin/                  # Admin controllers (products, categories, users)
+│   ├── Auth/                   # Login & register controllers
+│   ├── HomeController.php
+│   ├── ProductController.php
+│   ├── CategoryController.php
+│   ├── DashboardController.php
+│   ├── ProfileController.php
+│   └── ShippingAddressController.php
+└── Models/
+    ├── User.php
+    ├── Product.php
+    ├── Category.php
+    └── ShippingAddress.php
+
+resources/views/
+├── layouts/app.blade.php       # Master layout
+├── home.blade.php              # Home page with partials
+├── products/                   # Product listing & detail
+├── categories/                 # Category listing & detail
+├── dashboard.blade.php         # User account dashboard
+├── auth/                       # Login & register forms
+└── admin/                      # Admin panel views
+
+routes/web.php                  # All application routes
+```
+
+---
 
 ## Agentic Development
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+This project uses [Laravel Boost](https://laravel.com/docs/ai) to supercharge AI-assisted development:
 
-```bash
-composer require laravel/boost --dev
+Boost provides 15+ MCP tools and skills that help agents build Laravel applications while following best practices — database inspection, log reading, semantic documentation search, and more.
 
-php artisan boost:install
-```
-
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT
